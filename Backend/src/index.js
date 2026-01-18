@@ -1,0 +1,80 @@
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+require('dotenv').config();
+
+const prisma = require('./prismaClient.js');
+const authRoutes = require('./routes/authRoutes.js');
+const reviewRoutes = require('./routes/reviewRoutes.js');
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/review', reviewRoutes);
+
+// Post
+//      users
+
+//      reviews
+
+// Get
+//      users
+app.get('/users', async (req, res) => {
+    try {
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                email: true,
+                username: true,
+                createdAt: true,
+            },
+        });
+        res.json(users);
+    } catch (err) {
+        console.error('Error fetching users:',err);
+        res.status(500).json({error: 'Failed to fetch users'});
+    }
+});
+
+//      reviews
+app.get('/reviews', async (req, res) => {
+    try {
+        const reviews = await prisma.review.findMany({
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                rating: true,
+                images: true,
+                authorId: true,
+                createdAt: true,
+            },
+        });
+        res.json(reviews);
+    } catch (err) {
+        console.error('Error fetching reviews:',err);
+        res.status(500).json({error: 'Failed to fetch reviews'});
+    }
+});
+
+
+// else
+app.get('/', (req, res) => {
+    res.json({message: 'Review API is running!'});
+});
+
+
+
+process.on('SIGINT', async () => {
+    await prisma.$disconnect();
+    console.log('Server shutdown');
+    process.exit(0);
+})
+
+module.exports = app;

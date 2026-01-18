@@ -1,0 +1,62 @@
+const prisma = require('../prismaClient.js')
+
+
+// const bcrypt = require('bcryptjs')
+// const jwt = require('jsonwebtoken');
+
+const create = async (req, res) => {
+    try {
+        const {itemTitle, title, content, rating, images} = req.body;
+        const authorId = req.userId;
+
+        // Валидация
+        if (!title || !content || !rating) {
+            return res.status(400).json({error: 'Title, content and rating are required'});
+        }
+
+        // Логика предмета
+        let itemId;
+        const existingItem = await prisma.item.findUnique({
+            where: {title: itemTitle},
+        });
+        if (existingItem) {
+            itemId = existingItem.id;
+        } else {
+            const newItem = await prisma.item.create({
+                data: {
+                    title: itemTitle,
+                }
+            })
+            itemId = newItem.id;
+        }
+
+
+        // Создание отзыва
+        const review = await prisma.review.create({
+            data: {
+                title,
+                content,
+                rating,
+                images: images || [],
+                authorId,
+                ItemId: itemId,
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                rating: true,
+                images: true,
+                authorId: true,
+                createdAt: true,
+            },
+        });
+
+        res.status(201).json({message: 'Review successfully created', review});
+    } catch (err) {
+        console.log('Review create error', err);
+        res.status(500).json({error: 'Internal server error'});
+    }
+}
+
+module.exports = {create};
