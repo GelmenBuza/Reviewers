@@ -18,11 +18,6 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/review', reviewRoutes);
 
-// Post
-//      users
-
-//      reviews
-
 // Get
 //      users
 app.get('/users', async (req, res) => {
@@ -32,6 +27,7 @@ app.get('/users', async (req, res) => {
                 id: true,
                 email: true,
                 username: true,
+                role: true,
                 createdAt: true,
             },
         });
@@ -66,7 +62,7 @@ app.get('/reviews', async (req, res) => {
 
 // else
 app.get('/', (req, res) => {
-    res.json({message: 'Review API is running!'});
+    res.json({status: 'ok'});
 });
 
 
