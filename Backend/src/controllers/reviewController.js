@@ -59,4 +59,25 @@ const create = async (req, res) => {
     }
 }
 
-module.exports = {create};
+const deleteReview = async (req, res) => {
+    try {
+        const reviewId = parseInt(req.params.id);
+
+        await prisma.review.delete({
+            where: {
+                id: reviewId,
+                authorId: req.userId
+            },
+        })
+
+        res.json({
+            message: 'Review deleted successfully',
+        });
+
+    } catch (err) {
+        console.log('Delete review error', err);
+        res.status(500).json({error: 'Internal server error'});
+    }
+}
+
+module.exports = {create, deleteReview};

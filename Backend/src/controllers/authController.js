@@ -2,16 +2,16 @@ const bcrypt = require('bcryptjs')
 const prisma = require('../prismaClient.js')
 const jwt = require('jsonwebtoken');
 
-const register = async(req, res) => {
+const register = async (req, res) => {
     try {
-        const { email, username, password } = req.body;
+        const {email, username, password} = req.body;
 
         if (!email || !password) {
             return res.status(400).json({error: 'Email and password are required'});
         }
 
         const existingUser = await prisma.user.findUnique({
-            where: { email },
+            where: {email},
         });
 
         if (existingUser) {
@@ -42,16 +42,16 @@ const register = async(req, res) => {
     }
 }
 
-const login = async(req, res) => {
+const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const {email, password} = req.body;
 
         if (!email || !password) {
             return res.status(400).json({error: 'Email and password are required'});
         }
 
         const user = await prisma.user.findUnique({
-            where: { email },
+            where: {email},
         });
 
         if (!user) {
@@ -94,4 +94,54 @@ const login = async(req, res) => {
     }
 }
 
-module.exports = {register, login};
+const changeUserName = async (req, res) => {
+    try {
+        const {newName} = req.body;
+        const userId = req.userId;
+
+        if (!newName) {
+            return res.status(400).json({error: 'New name is required'});
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: {id: userId},
+            data: {username: newName},
+            select: {
+                id: true,
+                email: true,
+                username: true,
+                role: true,
+                createdAt: true,
+            },
+        })
+
+        res.json({
+            message: 'User name changed successfully',
+            user: updatedUser
+        });
+
+    } catch (err) {
+        console.log('User name change error', err);
+        res.status(500).json({error: 'Internal server error'});
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        await prisma.user.delete({
+            where: {id: userId}
+        })
+
+        res.json({
+            message: 'User deleted successfully',
+        });
+
+    } catch (err) {
+        console.log('Delete user error', err);
+        res.status(500).json({error: 'Internal server error'});
+    }
+}
+
+module.exports = {register, login, changeUserName, deleteUser};
