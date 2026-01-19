@@ -59,6 +59,48 @@ const create = async (req, res) => {
     }
 }
 
+
+const updateReview = async (req, res) => {
+    try {
+        const {newTitle, newContent, newRating, newImages} = req.body;
+        const reviewId = parseInt(req.params.id);
+
+        if (!newTitle || !newContent || !newRating) {
+            return res.status(400).json({error: 'Title, content and rating are required'});
+        }
+
+        const updatedReview = await prisma.review.update({
+            where: {
+                id: reviewId,
+                authorId: req.userId
+            },
+            data: {
+                title: newTitle,
+                content: newContent,
+                rating: newRating,
+                images: newImages
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                rating: true,
+                images: true,
+                createdAt: true,
+            },
+        })
+
+        res.json({
+            message: 'Review updated successfully',
+            user: updatedReview
+        });
+
+    } catch (err) {
+        console.log('Review update error', err);
+        res.status(500).json({error: 'Internal server error'});
+    }
+}
+
 const deleteReview = async (req, res) => {
     try {
         const reviewId = parseInt(req.params.id);
@@ -80,4 +122,4 @@ const deleteReview = async (req, res) => {
     }
 }
 
-module.exports = {create, deleteReview};
+module.exports = {create, updateReview, deleteReview};
