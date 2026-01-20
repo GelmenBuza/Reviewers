@@ -38,27 +38,6 @@ app.get('/users', async (req, res) => {
     }
 });
 
-//      reviews
-app.get('/reviews', async (req, res) => {
-    try {
-        const reviews = await prisma.review.findMany({
-            select: {
-                id: true,
-                title: true,
-                content: true,
-                rating: true,
-                images: true,
-                authorId: true,
-                createdAt: true,
-            },
-        });
-        res.json(reviews);
-    } catch (err) {
-        console.error('Error fetching reviews:',err);
-        res.status(500).json({error: 'Failed to fetch reviews'});
-    }
-});
-
 
 // else
 app.get('/', (req, res) => {

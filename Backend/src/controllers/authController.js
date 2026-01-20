@@ -144,4 +144,23 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = {register, login, changeUserName, deleteUser};
+const refreshToken = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        const user = await prisma.user.findUnique({
+            where: {id: userId}
+        })
+
+        res.json({
+            message: 'Token refreshed successfully',
+            user: user,
+        });
+
+    } catch (err) {
+        console.log('Refresh token error', err);
+        res.status(500).json({error: 'Internal server error'});
+    }
+}
+
+module.exports = {register, login, changeUserName, deleteUser, refreshToken};

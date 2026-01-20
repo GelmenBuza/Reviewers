@@ -122,4 +122,40 @@ const deleteReview = async (req, res) => {
     }
 }
 
-module.exports = {create, updateReview, deleteReview};
+const getItems = async (req, res) => {
+    try {
+        const items = await prisma.item.findMany({
+            select: {
+                id: true,
+                title: true,
+            },
+        });
+        res.json(items);
+    } catch (err) {
+        console.error('Error fetching items:',err);
+        res.status(500).json({error: 'Failed to fetch reviews'});
+    }
+}
+
+const getReview = async (req, res) => {
+    try {
+        const reviews = await prisma.review.findMany({
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                rating: true,
+                images: true,
+                authorId: true,
+                createdAt: true,
+                itemId: true,
+            },
+        });
+        res.json(reviews);
+    } catch (err) {
+        console.error('Error fetching reviews:',err);
+        res.status(500).json({error: 'Failed to fetch reviews'});
+    }
+}
+
+module.exports = {create, updateReview, deleteReview, getItems, getReview};
