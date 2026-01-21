@@ -68,13 +68,13 @@ export const useUserApi = {
 		}
 		return res.json();
 	},
-	getUserNameById: async (id) => {
-		const res = await fetch(`${BASE_URL}/${id}`, {
+	getUsers: async (id) => {
+		const res = await fetch(`${BASE_URL}`, {
 			headers: getBaseHead(),
 		});
 		if (!res.ok) {
 			const error = await res.json();
-			throw new Error(`Get user name by id Error: ${error.message}`);
+			throw new Error(`Get users Error: ${error.message}`);
 		}
 		return res.json();
 	},

@@ -1,11 +1,11 @@
 const express = require("express");
 const {
-	register,
-	login,
-	changeUserName,
-	deleteUser,
-	refreshToken,
-	getUserNameById,
+    register,
+    login,
+    changeUserName,
+    deleteUser,
+    refreshToken,
+    getUsers,
 } = require("../controllers/authController.js");
 const authMiddleware = require("../middleware/authMiddleware.js");
 
@@ -16,6 +16,6 @@ router.post("/login", login);
 router.patch("/changeUsername", authMiddleware, changeUserName);
 router.delete("/deleteUser", authMiddleware, deleteUser);
 router.get("/refreshToken", authMiddleware, refreshToken);
-router.get("/:id", getUserNameById);
+router.get("/", getUsers);
 
 module.exports = router;

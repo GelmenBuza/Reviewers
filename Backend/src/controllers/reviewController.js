@@ -150,7 +150,7 @@ const getReviews = async (req, res) => {
 				images: true,
 				authorId: true,
 				createdAt: true,
-				itemId: true,
+				ItemId: true,
 			},
 		});
 		res.json(reviews);

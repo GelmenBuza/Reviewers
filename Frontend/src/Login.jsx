@@ -1,6 +1,6 @@
 import './App.css'
 import {useState} from "react";
-import {useUserApi} from "./api/auth.js";
+import {useUserApi} from "./api/useAuthApi.js";
 import {useAuth} from "./context/userStore.jsx";
 import {useNavigate} from "react-router";
 

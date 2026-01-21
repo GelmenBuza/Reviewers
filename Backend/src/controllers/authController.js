@@ -163,23 +163,20 @@ const refreshToken = async (req, res) => {
 	}
 };
 
-const getUserNameById = async (req, res) => {
+const getUsers = async (req, res) => {
 	try {
-		const userId = parseInt(req.params.id);
-
-		const user = await prisma.user.findUnique({
-			where: { id: userId },
+		const users = await prisma.user.findMany({
 			select: {
 				id: true,
-				userName: true,
+				username: true,
 			},
 		});
 		res.json({
-			massage: "Username getted successfully",
-			user: userName,
+			massage: "Users got successfully",
+			users: users,
 		});
 	} catch (err) {
-		console.log("Username get error", err);
+		console.log("Users get error", err);
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
@@ -190,5 +187,5 @@ module.exports = {
 	changeUserName,
 	deleteUser,
 	refreshToken,
-	getUserNameById,
+    getUsers,
 };

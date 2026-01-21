@@ -1,22 +1,34 @@
-import style from "style.module.css";
-import { useUserApi } from "../../api/useAuthApi";
+import style from "./style.module.css";
+import {useUserApi} from "../../api/useAuthApi";
+import {useEffect, useState} from "react";
 
-export default function ReviewCard({ item }) {
-	const authorId = useUserApi.getUserNameById(item.authorId);
+const ReviewCard = ({item}) => {
+    const [author, setAuthor] = useState();
 
-	return (
-		<div className={style.card}>
-			<div className={style.images}></div>
-			<div className={reviewData}>
-				<div className={style.reviewContent}>
-					<h3 className={style.reviewTitle}>{item.title}</h3>
-					<p className={style.reviewContent}>{item.content}</p>
-				</div>
-				<div className={reviewInfo}>
-					<p className={style.reviewCreatedAt}>{item.createdAt}</p>
-					<p className={style.reveiwAuthor}>{authorId}</p>
-				</div>
-			</div>
-		</div>
-	);
+    useEffect(() => {
+        const getAuthor = async () => {
+            const {users} = await useUserApi.getUsers();
+            const foudAuthor = users.find(user => user.id === item.authorId);
+            setAuthor(foudAuthor);
+        }
+        getAuthor();
+    }, [item.authorId])
+
+    return (
+        <div className={style.card}>
+            <div className={style.images}></div>
+            <div className={style.reviewData}>
+                <div className={style.reviewContent}>
+                    <h3 className={style.reviewTitle}>{item.title}</h3>
+                    <p className={style.reviewDesc}>{item.content}</p>
+                </div>
+                <div className={style.reviewInfo}>
+                    <p className={style.reviewCreatedAt}>{item.createdAt}</p>
+                    <p className={style.reviewAuthor}>{author ? author.username : "Загрузка..."}</p>
+                </div>
+            </div>
+        </div>
+    );
 }
+
+export default ReviewCard;
