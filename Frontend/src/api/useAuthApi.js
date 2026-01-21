@@ -68,4 +68,14 @@ export const useUserApi = {
 		}
 		return res.json();
 	},
+	getUserNameById: async (id) => {
+		const res = await fetch(`${BASE_URL}/${id}`, {
+			headers: getBaseHead(),
+		});
+		if (!res.ok) {
+			const error = await res.json();
+			throw new Error(`Get user name by id Error: ${error.message}`);
+		}
+		return res.json();
+	},
 };
