@@ -163,9 +163,13 @@ const refreshToken = async (req, res) => {
 	}
 };
 
-const getUsers = async (req, res) => {
+const getUserById = async (req, res) => {
 	try {
-		const users = await prisma.user.findMany({
+		const userId = parseInt(req.params.id);
+		const users = await prisma.user.findUnique({
+			where: {
+				id: userId,
+			},
 			select: {
 				id: true,
 				username: true,
@@ -187,5 +191,5 @@ module.exports = {
 	changeUserName,
 	deleteUser,
 	refreshToken,
-    getUsers,
+	getUserById,
 };

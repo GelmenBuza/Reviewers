@@ -68,8 +68,8 @@ export const useUserApi = {
 		}
 		return res.json();
 	},
-	getUsers: async (id) => {
-		const res = await fetch(`${BASE_URL}`, {
+	getUserById: async (id) => {
+		const res = await fetch(`${BASE_URL}/user/${id}`, {
 			headers: getBaseHead(),
 		});
 		if (!res.ok) {
