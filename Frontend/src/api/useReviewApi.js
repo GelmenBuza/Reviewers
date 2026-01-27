@@ -1,13 +1,5 @@
 const BASE_URL = "http://localhost:3000/api/review";
 
-const getAuthHead = () => {
-	const token = localStorage.getItem("token");
-	return {
-		"Content-Type": "application/json",
-		Authorization: `Bearer ${token}`,
-	};
-};
-
 const getBaseHead = () => {
 	return {
 		"Content-Type": "application/json",
@@ -28,6 +20,7 @@ export const useReviewApi = {
 	createReview: async (itemTitle, title, content, rating, images) => {
 		const res = await fetch(`${BASE_URL}/create`, {
 			method: "POST",
+			credentials: "include",
 			headers: getBaseHead(),
 			body: JSON.stringify({
 				itemTitle,
@@ -46,6 +39,7 @@ export const useReviewApi = {
 	updateReview: async (id, newTitle, newContent, newRating, newImages) => {
 		const res = await fetch(`${BASE_URL}/${id}`, {
 			method: "PATCH",
+			credentials: "include",
 			headers: getBaseHead(),
 			body: JSON.stringify({
 				newTitle,
@@ -63,6 +57,7 @@ export const useReviewApi = {
 	deleteReview: async (id) => {
 		const res = await fetch(`${BASE_URL}/${id}`, {
 			method: "DELETE",
+			credentials: "include",
 			headers: getBaseHead(),
 		});
 		if (!res.ok) {

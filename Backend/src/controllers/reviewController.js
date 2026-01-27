@@ -7,7 +7,10 @@ const create = async (req, res) => {
 	try {
 		const { itemTitle, title, content, rating, images } = req.body;
 		const authorId = req.userId;
-
+		console.log("----------------------");
+		console.log("Cookies:", req.cookies);
+		console.log("Header:", req.headers);
+		console.log("Cookies header:", req.headers.cookies);
 		// Валидация
 		if (!title || !content || !rating) {
 			return res
