@@ -166,7 +166,7 @@ const refreshToken = async (req, res) => {
 const getUserById = async (req, res) => {
 	try {
 		const userId = parseInt(req.params.id);
-		const users = await prisma.user.findUnique({
+		const user = await prisma.user.findUnique({
 			where: {
 				id: userId,
 			},
@@ -177,7 +177,7 @@ const getUserById = async (req, res) => {
 		});
 		res.json({
 			massage: "Users got successfully",
-			users: users,
+			user: user,
 		});
 	} catch (err) {
 		console.log("Users get error", err);

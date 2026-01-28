@@ -7,12 +7,12 @@ const ReviewCard = ({ item }) => {
 
 	useEffect(() => {
 		const getAuthor = async () => {
-			const { user } = await useUserApi.getUserById();
+			const { user } = await useUserApi.getUserById(item.authorId);
 			setAuthor(user);
 		};
 		getAuthor();
 	}, [item.authorId]);
-
+	console.log(author);
 	return (
 		<div className={style.card}>
 			<div className={style.images}></div>

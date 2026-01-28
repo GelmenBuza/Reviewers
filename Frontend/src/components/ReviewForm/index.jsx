@@ -2,7 +2,7 @@ import style from "./style.module.css";
 import { useReviewApi } from "../../api/useReviewApi";
 import { useState } from "react";
 
-const ReviewForm = () => {
+const ReviewForm = ({ refreshCatalog, setRefreshCatalog, setCreateFlag }) => {
 	const [item, setItem] = useState("");
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
@@ -17,7 +17,8 @@ const ReviewForm = () => {
 			rating,
 			[],
 		);
-		console.log(res);
+		setRefreshCatalog(!refreshCatalog);
+		setCreateFlag(false);
 	};
 	return (
 		<form className={style.form} onSubmit={(e) => handleSubmit(e)}>

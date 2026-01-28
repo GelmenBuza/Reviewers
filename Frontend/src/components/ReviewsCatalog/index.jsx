@@ -5,9 +5,8 @@ import { useReviewApi } from "../../api/useReviewApi.js";
 import ReviewCard from "../ReviewCard";
 import { useUserApi } from "../../api/useAuthApi.js";
 
-const reviews = await useReviewApi.getReviews();
-
-export default function ReviewsCatalog() {
+export default function ReviewsCatalog({ refreshCatalog }) {
+	const [reviews, setReviews] = useState([]);
 	// const { user } = useAuth();
 	// const [sort, setSort] = useState("name");
 	// const [reviews, setReviews] = useState(review);
@@ -32,6 +31,13 @@ export default function ReviewsCatalog() {
 	//     ,
 	//     [sort]
 	// )
+
+	useEffect(() => {
+		const getReviews = async () => {
+			setReviews(await useReviewApi.getReviews());
+		};
+		getReviews();
+	}, [refreshCatalog]);
 
 	return (
 		<div>
