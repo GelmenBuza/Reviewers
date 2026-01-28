@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000/api/review";
+const BASE_URL = "/api/review";
 
 const getBaseHead = () => {
 	return {

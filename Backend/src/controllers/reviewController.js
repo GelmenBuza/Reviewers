@@ -6,13 +6,14 @@ const prisma = require("../prismaClient.js");
 const create = async (req, res) => {
 	try {
 		const { itemTitle, title, content, rating, images } = req.body;
+		const intRaiting = +rating;
 		const authorId = req.userId;
 		console.log("----------------------");
 		console.log("Cookies:", req.cookies);
 		console.log("Header:", req.headers);
 		console.log("Cookies header:", req.headers.cookies);
 		// Валидация
-		if (!title || !content || !rating) {
+		if (!title || !content || !intRaiting) {
 			return res
 				.status(400)
 				.json({ error: "Title, content and rating are required" });
@@ -39,7 +40,7 @@ const create = async (req, res) => {
 			data: {
 				title,
 				content,
-				rating,
+				rating: intRaiting,
 				images: images || [],
 				authorId,
 				ItemId: itemId,
