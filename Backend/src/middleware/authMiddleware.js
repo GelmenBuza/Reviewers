@@ -3,6 +3,7 @@ const prisma = require("../prismaClient.js");
 
 const authMiddleware = async (req, res, next) => {
 	try {
+		const token = req.cookies.token;
 		if (!token) {
 			return res.status(401).json({ error: "Authentication required" });
 		}
