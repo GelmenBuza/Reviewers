@@ -1,29 +1,40 @@
-import {createContext, useContext, useState} from "react";
+import { createContext, useContext, useState } from "react";
 
 export const AuthContext = createContext();
 
-
 export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) throw new Error("useAuth not context");
-    return context;
-}
+	const context = useContext(AuthContext);
+	if (!context) throw new Error("useAuth not context");
+	return context;
+};
 
-export function AuthProvider({children}) {
-    const [user, setUser] = useState(null);
-    // const [error, setError] = useState();
+export function AuthProvider({ children }) {
+	const [user, setUser] = useState(null);
+	const [AccessToken, setAccessToken] = useState(null);
+	// const [error, setError] = useState();
 
-    const saveUser = (user) => {
-        setUser(user);
-    }
+	const saveUser = (user) => {
+		setUser(user);
+	};
 
-    const deleteUser = () => {
-        setUser(null);
-    }
+	const deleteUser = () => {
+		setUser(null);
+	};
 
-    const value = {
-        saveUser, deleteUser, user
-    }
+	const saveToken = (token) => {
+		setAccessToken(token);
+	};
 
-    return (<AuthContext.Provider value={value}>{children}</AuthContext.Provider>);
+	const value = {
+		saveUser,
+		deleteUser,
+		user,
+
+		saveToken,
+		AccessToken,
+	};
+
+	return (
+		<AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+	);
 }

@@ -13,7 +13,7 @@ model User {
   role      String
   password  String
   reviews   Review[]
-  token     String?
+  refreshToken     String?
   createdAt DateTime @default(now())
 }
 
