@@ -12,7 +12,6 @@ const ReviewCard = ({ item }) => {
 		};
 		getAuthor();
 	}, [item.authorId]);
-	console.log(author);
 	return (
 		<div className={style.card}>
 			<div className={style.images}></div>

@@ -1,12 +1,5 @@
 const BASE_URL = "/api/auth";
-
-const getAuthHead = () => {
-	const token = 222222222222;
-	return {
-		"Content-Type": "application/json",
-		Authorization: `Bearer ${token}`,
-	};
-};
+import apiRequest from '.'
 
 const getBaseHead = () => {
 	return {
@@ -14,11 +7,13 @@ const getBaseHead = () => {
 	};
 };
 
+
+
 export const useUserApi = {
 	login: async (email, password) => {
 		const res = await fetch(`${BASE_URL}/login`, {
 			method: "POST",
-			headers: getAuthHead(),
+			headers: getBaseHead(),
 			body: JSON.stringify({ email, password }),
 		});
 		if (!res.ok) {
@@ -43,10 +38,10 @@ export const useUserApi = {
 		}
 		return res.json();
 	},
-	changeUserName: async (newName) => {
+	changeUserName: async (newName, token) => {
 		const res = await fetch(`${BASE_URL}/changeUsername`, {
 			method: "PATCH",
-			headers: getBaseHead(),
+			headers: getAuthHead(token),
 			body: JSON.stringify({
 				newName,
 			}),

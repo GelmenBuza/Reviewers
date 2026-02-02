@@ -15,7 +15,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.patch("/changeUsername", authMiddleware, changeUserName);
 router.delete("/deleteUser", authMiddleware, deleteUser);
-router.get("/refreshToken", authMiddleware, refreshToken);
+router.post("/refreshToken", refreshToken);
 router.get("/user/:id", getUserById);
 
 module.exports = router;

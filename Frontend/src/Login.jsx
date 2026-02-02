@@ -4,6 +4,18 @@ import { useUserApi } from "./api/useAuthApi.js";
 import { useAuth } from "./context/userStore.jsx";
 import { useNavigate } from "react-router";
 
+
+async function refreshToken() {
+    const BASE_URL = "/api/auth";
+
+    const res = await fetch(`${BASE_URL}/refreshToken`, {
+        method: "POST",
+        credentials: "include"
+    })
+    return await res.json()
+}
+
+
 function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -16,6 +28,8 @@ function Login() {
 		if (res.code === 200) {
 			saveToken(res.AccessToken);
 			saveUser(res.user);
+            const token = await refreshToken()
+            window.sessionStorage.setItem("accessToken", token.AccessToken)
 			navigate("/catalog");
 		}
 	};

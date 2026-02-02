@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const prisma = require("../prismaClient.js");
 const jwt = require("jsonwebtoken");
-const path = require("path");
+
 
 const register = async (req, res) => {
 	try {
@@ -48,7 +48,6 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-	console.log(req.headers["authorization"]);
 	try {
 		const { email, password } = req.body;
 
@@ -63,7 +62,7 @@ const login = async (req, res) => {
 		});
 
 		if (!user) {
-			return res.status(401).json({ error: "Invalid email or password" });
+			return res.status(402).json({ error: "Invalid email or password" });
 		}
 
 		const isPasswordMatch = await bcrypt.compare(password, user.password);
@@ -103,7 +102,7 @@ const login = async (req, res) => {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "lax",
-			path: "/refreshToken",
+			path: "api/auth/refreshToken",
 			maxAge: 7 * 24 * 60 * 60 * 1000,
 		});
 
@@ -174,11 +173,24 @@ const deleteUser = async (req, res) => {
 
 const refreshToken = async (req, res) => {
 	try {
-		const userId = req.userId;
+        const refreshToken = req.cookies.refreshToken;
 
-		const user = await prisma.user.findUnique({
-			where: { id: userId },
-		});
+        if (!refreshToken) {
+            return res.status(401).json({ error: "Authentication required" });
+        }
+        const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+        req.userId = decoded.userId;
+
+        const user = await prisma.user.findUnique({
+            where: { id: req.userId },
+            select: { id: true },
+        });
+        if (!user) {
+            return res.status(401).json({ error: "User not found" });
+        }
+
+        const userId = req.userId;
+
 
 		const AccessToken = jwt.sign(
 			{
@@ -192,7 +204,7 @@ const refreshToken = async (req, res) => {
 		);
 
 		res.json({
-			message: "Token resfreshed successful",
+			message: "Token refreshed successful",
 			AccessToken: AccessToken,
 			code: 200,
 		});
