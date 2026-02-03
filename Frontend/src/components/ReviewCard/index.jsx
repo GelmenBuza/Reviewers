@@ -21,7 +21,9 @@ const ReviewCard = ({ item }) => {
 					<p className={style.reviewDesc}>{item.content}</p>
 				</div>
 				<div className={style.reviewInfo}>
-					<p className={style.reviewCreatedAt}>{item.createdAt}</p>
+					<p className={style.reviewCreatedAt}>
+						{item.createdAt.split("T")[0]}
+					</p>
 					<p className={style.reviewAuthor}>
 						{author ? author.username : "Загрузка..."}
 					</p>

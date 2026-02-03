@@ -39,19 +39,17 @@ export default function ReviewsCatalog({ refreshCatalog }) {
 		getReviews();
 	}, [refreshCatalog]);
 
+	// {/*{user.role === 'manager' && (*/}
+	// {/*    <select name="sortSelect" id="sortSelect" onChange={(e) => setSort(e.target.value)}>*/}
+	// {/*        <option value='none' selected>Не сортировать</option>*/}
+	// {/*        <option value='name'>Сортировать</option>*/}
+	// {/*    </select>*/}
+	// {/*)}}*/}
 	return (
-		<div>
-			{/*{user.role === 'manager' && (*/}
-			{/*    <select name="sortSelect" id="sortSelect" onChange={(e) => setSort(e.target.value)}>*/}
-			{/*        <option value='none' selected>Не сортировать</option>*/}
-			{/*        <option value='name'>Сортировать</option>*/}
-			{/*    </select>*/}
-			{/*)}}*/}
-			<div className={style.catalog}>
-				{reviews.map((item) => (
-					<ReviewCard key={item.id} item={item} />
-				))}
-			</div>
+		<div className={style.catalog}>
+			{reviews.map((item) => (
+				<ReviewCard key={item.id} item={item} />
+			))}
 		</div>
 	);
 }
