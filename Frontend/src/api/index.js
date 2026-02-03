@@ -29,7 +29,6 @@ export default async function apiRequest(accessToken, url, req, attemps = 2) {
 	} catch (e) {
 		if (attemps == 0) return e;
 		if (e.status == 401 && attemps > 0) {
-			console.log("DA");
 			let newToken = await refreshToken();
 			window.sessionStorage.setItem("accessToken", newToken.AccessToken);
 			return await apiRequest(
