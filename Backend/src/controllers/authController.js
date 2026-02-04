@@ -107,7 +107,7 @@ const login = async (req, res) => {
 		});
 
 		res.json({
-			message: "Login successful",
+			message: "Index successful",
 			user: {
 				id: user.id,
 				email: user.email,
@@ -118,7 +118,7 @@ const login = async (req, res) => {
 			code: 200,
 		});
 	} catch (err) {
-		console.log("Login error", err);
+		console.log("Index error", err);
 		res.status(500).json({ error: "Internal server error" });
 	}
 };

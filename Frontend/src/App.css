@@ -1,7 +1,9 @@
 #root {
 	width: 90vw;
+    height: 90vh;
 	display: flex;
 	justify-content: center;
 	padding: 2rem;
 	text-align: center;
 }
+
