@@ -125,21 +125,6 @@ const deleteReview = async (req, res) => {
 	}
 };
 
-const getItems = async (req, res) => {
-	try {
-		const items = await prisma.item.findMany({
-			select: {
-				id: true,
-				title: true,
-			},
-		});
-		res.json(items);
-	} catch (err) {
-		console.error("Error fetching items:", err);
-		res.status(500).json({ error: "Failed to fetch reviews" });
-	}
-};
-
 const getReviews = async (req, res) => {
 	try {
 		const reviews = await prisma.review.findMany({
@@ -161,4 +146,4 @@ const getReviews = async (req, res) => {
 	}
 };
 
-module.exports = { create, updateReview, deleteReview, getItems, getReviews };
+module.exports = { create, updateReview, deleteReview, getReviews };
