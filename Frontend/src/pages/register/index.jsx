@@ -6,7 +6,6 @@ export default function RegisterPage() {
 	return (
 		<div className={style.registrationPage}>
 			<RegisterForm />
-			<Link to={"/login"}>Уже есть аккаунт?</Link>
 		</div>
 	);
 }

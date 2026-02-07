@@ -1,33 +1,43 @@
+.formContainer {
+    padding: 10px;
+    border: 1px solid #1a1a1a;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: #1a1a1a 0 0 20px 5px;
+}
+
 .regForm {
-	width: 250px;
+    width: 250px;
 }
 
 .inputContainer {
-	position: relative;
+    position: relative;
 }
 
 .error {
-	display: none;
-	background-color: #1a1a1ab7;
-	padding: 2.5px 5px;
-	border: 1px solid rgb(56, 56, 56);
-	border-radius: 10px;
-	position: absolute;
-	top: -20px;
-	left: 300px;
-	font-size: 14px;
-	width: max-content;
+    display: none;
+    background-color: #1a1a1ab7;
+    padding: 2.5px 5px;
+    border: 1px solid rgb(56, 56, 56);
+    border-radius: 10px;
+    position: absolute;
+    top: -20px;
+    left: 300px;
+    font-size: 14px;
+    width: max-content;
 }
 
 .errorInfo:hover ~ .error {
-	display: block;
+    display: block;
 }
 
 .formInput {
-	width: 100%;
+    width: 100%;
 }
 
 .inputError {
-	position: relative;
-	border: 1px solid red;
+    position: relative;
+    border: 1px solid red;
 }
