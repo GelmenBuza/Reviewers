@@ -11,11 +11,16 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
 	const [user, setUser] = useState(null);
 	const [AccessToken, setAccessToken] = useState(null);
+    const [items, setItems] = useState(null);
 	// const [error, setError] = useState();
 
 	const saveUser = (user) => {
 		setUser(user);
 	};
+
+    const saveItems = (items) => {
+        setItems(items);
+    }
 
 	const deleteUser = () => {
 		setUser(null);
@@ -32,6 +37,9 @@ export function AuthProvider({ children }) {
 
 		saveToken,
 		AccessToken,
+
+        saveItems,
+        items,
 	};
 
 	return (

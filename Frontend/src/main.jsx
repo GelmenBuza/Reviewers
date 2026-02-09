@@ -6,6 +6,7 @@ import {BrowserRouter, Routes, Route} from "react-router";
 import {AuthProvider} from "./context/userStore.jsx";
 import CatalogPage from "./pages/catalog";
 import RegisterPage from "./pages/register";
+import ReviewsPage from "./pages/reviews";
 
 createRoot(document.getElementById("root")).render(
     <AuthProvider>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/" element={<RegisterPage/>}/>
                 <Route path="/login" element={<Index/>}/>
                 <Route path="/catalog" element={<CatalogPage/>}/>
+                <Route path="/reviews" element={<ReviewsPage/>}/>
             </Routes>
         </BrowserRouter>
     </AuthProvider>,

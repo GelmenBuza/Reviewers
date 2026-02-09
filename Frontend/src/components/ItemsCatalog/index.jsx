@@ -4,7 +4,7 @@ import style from "./style.module.css";
 import { useItemsApi } from "../../api/useItemApi.js";
 import ItemCard from "../ItemsCard";
 
-export default function ReviewsCatalog({ refreshCatalog }) {
+export default function ItemsCatalog({ refreshCatalog }) {
 	const [items, setItems] = useState([]);
 
 	useEffect(() => {
