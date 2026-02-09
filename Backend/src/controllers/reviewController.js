@@ -165,6 +165,7 @@ const getReviewsByItemID = async (req, res) => {
 				ItemId: itemId,
 			},
 		});
+        res.status(200).json(review);
 	} catch (err) {
 		console.log("Error fetching reviews by item id:", err);
 		res.status(500).json({ error: "Failed to fetch reviews" });
