@@ -1,3 +1,4 @@
+const { error } = require("console");
 const prisma = require("../prismaClient.js");
 
 // const bcrypt = require('bcryptjs')
@@ -146,4 +147,34 @@ const getReviews = async (req, res) => {
 	}
 };
 
-module.exports = { create, updateReview, deleteReview, getReviews };
+const getReviewsByItemID = async (req, res) => {
+	try {
+		const itemId = parseInt(req.params.id);
+		const review = await prisma.review.findMany({
+			select: {
+				id: true,
+				title: true,
+				content: true,
+				rating: true,
+				images: true,
+				authorId: true,
+				createdAt: true,
+				ItemId: true,
+			},
+			where: {
+				ItemId: itemId,
+			},
+		});
+	} catch (err) {
+		console.log("Error fetching reviews by item id:", err);
+		res.status(500).json({ error: "Failed to fetch reviews" });
+	}
+};
+
+module.exports = {
+	create,
+	updateReview,
+	deleteReview,
+	getReviews,
+	getReviewsByItemID,
+};

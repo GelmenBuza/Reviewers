@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ReviewsCatalog from "../../components/ReviewsCatalog";
+import ItemsCatalog from "../../components/ItemsCatalog";
 import ReviewForm from "../../components/ReviewForm";
 import style from "./style.module.css";
 
@@ -9,7 +9,7 @@ export default function CatalogPage() {
 
 	return (
 		<div className={style.CatalogPage}>
-			<ReviewsCatalog refreshCatalog={refreshCatalog} />
+			<ItemsCatalog refreshCatalog={refreshCatalog} />
 			{createFlag ? (
 				<ReviewForm
 					refreshCatalog={refreshCatalog}

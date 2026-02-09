@@ -1,0 +1,26 @@
+.card {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 150px;
+	height: 300px;
+	border: 1px solid #3d3d3d;
+	border-radius: 10px;
+	padding: 10px 15px;
+	p,
+	h3 {
+		margin: 0;
+	}
+}
+
+.images {
+}
+
+.itemData {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.title {
+}
