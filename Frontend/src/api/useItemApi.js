@@ -19,4 +19,16 @@ export const useItemsApi = {
 		}
 		return res.json();
 	},
+	getItemById: async (id) => {
+		try {
+			const res = await fetch(`${BASE_URL}/${id}`, {
+				headers: getBaseHead(),
+			});
+			if (res.ok) {
+				return res.json();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	},
 };

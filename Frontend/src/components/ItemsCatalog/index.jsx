@@ -1,10 +1,9 @@
-import { useAuth } from "../../context/userStore.jsx";
 import { useEffect, useState } from "react";
 import style from "./style.module.css";
 import { useItemsApi } from "../../api/useItemApi.js";
 import ItemCard from "../ItemsCard";
 
-export default function ItemsCatalog({ refreshCatalog }) {
+export default function ItemsCatalog() {
 	const [items, setItems] = useState([]);
 
 	useEffect(() => {
@@ -12,7 +11,7 @@ export default function ItemsCatalog({ refreshCatalog }) {
 			setItems(await useItemsApi.getItems());
 		};
 		getItems();
-	}, [refreshCatalog]);
+	}, []);
 	return (
 		<div className={style.catalog}>
 			{items.map((item) => (

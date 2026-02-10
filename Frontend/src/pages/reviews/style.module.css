@@ -1,5 +1,15 @@
-.CatalogPage {
+.ReviewsPage {
 	display: flex;
 	flex-direction: column;
-	width: 90%;
+	width: 100%;
+	position: relative;
+}
+.formContaner {
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.24);
+	width: 100%;
+	height: 100%;
+}
+
+.titleContainer {
 }

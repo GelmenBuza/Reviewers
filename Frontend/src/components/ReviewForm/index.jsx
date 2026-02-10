@@ -2,12 +2,17 @@ import style from "./style.module.css";
 import { useReviewApi } from "../../api/useReviewApi";
 import { useState } from "react";
 
-const ReviewForm = ({ refreshCatalog, setRefreshCatalog, setCreateFlag }) => {
+const ReviewForm = ({
+	refreshCatalog,
+	setRefreshCatalog,
+	setCreateFlag,
+	oldItem = null,
+}) => {
 	const [item, setItem] = useState("");
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 	const [rating, setRating] = useState(0);
-
+	console.log(oldItem);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const res = await useReviewApi.createReview(
@@ -22,13 +27,17 @@ const ReviewForm = ({ refreshCatalog, setRefreshCatalog, setCreateFlag }) => {
 	};
 	return (
 		<form className={style.form} onSubmit={(e) => handleSubmit(e)}>
-			<input
-				type="text"
-				value={item}
-				onChange={(e) => setItem(e.target.value)}
-				placeholder="Предмет..."
-				required
-			/>
+			{oldItem ? (
+				<span>{oldItem}</span>
+			) : (
+				<input
+					type="text"
+					value={item}
+					onChange={(e) => setItem(e.target.value)}
+					placeholder="Предмет..."
+					required
+				/>
+			)}
 			<input
 				type="text"
 				value={title}
