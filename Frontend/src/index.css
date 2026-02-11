@@ -72,7 +72,8 @@ form {
 	gap: 20px;
 }
 
-input {
+input,
+textarea {
 	background-color: transparent;
 	border: none;
 	width: 100%;

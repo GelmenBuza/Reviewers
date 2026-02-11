@@ -21,10 +21,12 @@ export default function ReviewsPage() {
 
 	return (
 		<div className={style.ReviewsPage}>
-			<div className={style.titleContainer}>
-				<h2 className={style.title}>{title}</h2>
+			<div className={style.contentContainer}>
+				<div className={style.titleContainer}>
+					<h2 className={style.title}>{title}</h2>
+				</div>
+				<ReviewsCatalog refreshCatalog={refreshCatalog} />
 			</div>
-			<ReviewsCatalog refreshCatalog={refreshCatalog} />
 			{createFlag ? (
 				<div className={style.formContaner}>
 					<ReviewForm
