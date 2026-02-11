@@ -10,9 +10,9 @@ import ReviewsPage from "./pages/reviews";
 createRoot(document.getElementById("root")).render(
 	<BrowserRouter>
 		<Routes>
-			<Route path="/" element={<RegisterPage />} />
+			<Route path="/" element={<CatalogPage />} />
 			<Route path="/login" element={<Index />} />
-			<Route path="/catalog" element={<CatalogPage />} />
+			<Route path="/register" element={<RegisterPage />} />
 			<Route path="/reviews" element={<ReviewsPage />} />
 		</Routes>
 	</BrowserRouter>,
