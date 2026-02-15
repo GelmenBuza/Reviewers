@@ -13,8 +13,7 @@ createRoot(document.getElementById("root")).render(
 			<Route path="/" element={<CatalogPage />} />
 			<Route path="/login" element={<Index />} />
 			<Route path="/register" element={<RegisterPage />} />
-			<Route path="/reviews" element={<ReviewsPage />} />
-            <Route path="/:id"/>
+			<Route path="/reviews/:itemId?" element={<ReviewsPage />} />
 		</Routes>
 	</BrowserRouter>,
 );

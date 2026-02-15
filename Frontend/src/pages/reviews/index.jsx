@@ -5,11 +5,13 @@ import style from "./style.module.css";
 import ReviewsCatalog from "../../components/ReviewsCatalog/index.jsx";
 import { useUser } from "../../stores/userStore.jsx";
 import { useItemsApi } from "../../api/useItemApi.js";
+import {useParams} from "react-router";
 
 export default function ReviewsPage() {
 	const [createFlag, setCreateFlag] = useState(false);
 	const [refreshCatalog, setRefreshCatalog] = useState(false);
 	const [title, setTitle] = useState("");
+    const {itemId} = useParams() //!!!!!!!!!!!!!!
 	const reviews = useUser((state) => state.reviews);
 	useEffect(() => {
 		const getItemTitle = async () => {
