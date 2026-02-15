@@ -27,7 +27,7 @@ export default function LoginForm() {
 			saveUser(res.user);
 			const token = await refreshToken();
 			window.sessionStorage.setItem("accessToken", token.AccessToken);
-			navigate("/catalog");
+			navigate("/");
 		}
 	};
 
@@ -52,7 +52,7 @@ export default function LoginForm() {
 				</label>
 				<button type="submit">Войти</button>
 			</form>
-			<Link to={"/"}>Нет аккаунта?</Link>
+			<Link to={"/register"}>Нет аккаунта?</Link>
 		</div>
 	);
 }
