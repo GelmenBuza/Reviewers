@@ -35,4 +35,31 @@ const getItemById = async (req, res) => {
 	}
 };
 
-module.exports = { getItems, getItemById };
+const getSimilarItem = async (req, res) => {
+	try {
+		const { searchText } = req.body;
+
+		if (!searchText) {
+			return res.status(400).json({ error: "Search text is required" });
+		}
+
+		const items = await prisma.item.findMany({
+			select: {
+				id: true,
+				title: true,
+			},
+			where: {
+				title: {
+					contains: searchText,
+					mode: "insensitive",
+				},
+			},
+		});
+		res.status(200).json({ items });
+	} catch (err) {
+		console.error("Error fetching similar item:", err);
+		res.status(500).json({ error: "Failed to fetch similar item" });
+	}
+};
+
+module.exports = { getItems, getItemById, getSimilarItem };

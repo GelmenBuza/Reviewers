@@ -31,4 +31,18 @@ export const useItemsApi = {
 			console.log(e);
 		}
 	},
+
+	getSimilarItem: async (searchText) => {
+		try {
+			const res = await fetch(`${BASE_URL}/search`, {
+				headers: getBaseHead(),
+				body: JSON.stringify({ searchText }),
+			});
+			if (res.ok) {
+				return res.json();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	},
 };

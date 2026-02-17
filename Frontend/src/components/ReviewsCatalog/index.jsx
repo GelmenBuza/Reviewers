@@ -2,16 +2,13 @@ import { useEffect, useState } from "react";
 import style from "./style.module.css";
 import { useReviewApi } from "../../api/useReviewApi.js";
 import ReviewCard from "../ReviewCard";
-import { useUser } from "../../stores/userStore.jsx";
 
-export default function ReviewsCatalog({ refreshCatalog }) {
-	const [reviews, setReviews] = useState(useUser((state) => state.reviews));
+export default function ReviewsCatalog({ refreshCatalog, itemId }) {
+	const [reviews, setReviews] = useState([]);
 
 	useEffect(() => {
 		const getReviews = async () => {
-			setReviews(
-				await useReviewApi.getReviewsByItemID(reviews[0].ItemId),
-			);
+			setReviews(await useReviewApi.getReviewsByItemID(itemId));
 		};
 		getReviews();
 	}, [refreshCatalog]);

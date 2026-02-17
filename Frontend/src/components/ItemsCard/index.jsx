@@ -8,12 +8,7 @@ const ItemCard = ({ item }) => {
 	const saveReviews = useUser((state) => state.setReviews);
 	const navigate = useNavigate();
 	const onCardClick = async () => {
-		const res = await useReviewApi.getReviewsByItemID(item.id);
-		if (res) {
-			console.log(res);
-			saveReviews(res);
-			navigate("/reviews");
-		}
+		navigate(`/reviews/${item.id}`);
 	};
 
 	return (
