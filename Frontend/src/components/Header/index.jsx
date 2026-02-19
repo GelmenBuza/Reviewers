@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { useUser } from "../../stores/userStore.jsx";
 import style from "./style.module.css";
 import searchImg from "../../assets/search.svg";
@@ -7,8 +7,12 @@ import { useState } from "react";
 const NavMenu = () => {
 	const user = useUser((state) => state.user);
 	const [searchItem, setSearchItem] = useState(null);
+	const navigate = useNavigate();
 
-	const handleSearch = () => {};
+	const handleSearch = () => {
+		const normalizedText = searchItem.replace(" ", "+");
+		navigate(`/search/${normalizedText}`);
+	};
 
 	return (
 		<header className={style.header}>
@@ -29,7 +33,10 @@ const NavMenu = () => {
 				<div className={style["header-logo"]}>
 					<NavLink to={"/"} />
 				</div>
-				<form className={style["header-search"]}>
+				<form
+					className={style["header-search"]}
+					onSubmit={() => handleSearch()}
+				>
 					<label className={style["header-search-input"]}>
 						<input
 							type="text"

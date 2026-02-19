@@ -4,8 +4,8 @@ import NavMenu from "../../components/Header";
 
 export default function CatalogPage() {
 	return (
-		<div className={style.CatalogPage}>
-            <NavMenu/>
+		<div className="pageContainer">
+			<NavMenu />
 			<ItemsCatalog />
 		</div>
 	);

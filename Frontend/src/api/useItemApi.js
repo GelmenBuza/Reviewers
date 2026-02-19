@@ -34,9 +34,8 @@ export const useItemsApi = {
 
 	getSimilarItem: async (searchText) => {
 		try {
-			const res = await fetch(`${BASE_URL}/search`, {
+			const res = await fetch(`${BASE_URL}/search/${searchText}`, {
 				headers: getBaseHead(),
-				body: JSON.stringify({ searchText }),
 			});
 			if (res.ok) {
 				return res.json();

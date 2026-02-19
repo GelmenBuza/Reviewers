@@ -1,5 +1,6 @@
 const { error } = require("console");
 const prisma = require("../prismaClient.js");
+const { normalize } = require("path");
 
 const getItems = async (req, res) => {
 	try {
@@ -37,11 +38,11 @@ const getItemById = async (req, res) => {
 
 const getSimilarItem = async (req, res) => {
 	try {
-		const { searchText } = req.body;
-
+		const searchText = req.params.searchText;
 		if (!searchText) {
 			return res.status(400).json({ error: "Search text is required" });
 		}
+		const normalizedText = searchText.split("+").join(" ");
 
 		const items = await prisma.item.findMany({
 			select: {
@@ -50,7 +51,7 @@ const getSimilarItem = async (req, res) => {
 			},
 			where: {
 				title: {
-					contains: searchText,
+					contains: normalizedText,
 					mode: "insensitive",
 				},
 			},

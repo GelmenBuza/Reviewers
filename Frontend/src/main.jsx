@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import CatalogPage from "./pages/catalog";
 import RegisterPage from "./pages/register";
 import ReviewsPage from "./pages/reviews";
+import SearchPage from "./pages/search/index.jsx";
 
 createRoot(document.getElementById("root")).render(
 	<BrowserRouter>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")).render(
 			<Route path="/login" element={<Index />} />
 			<Route path="/register" element={<RegisterPage />} />
 			<Route path="/reviews/:itemId?" element={<ReviewsPage />} />
+			<Route path="/search/:params" element={<SearchPage />} />
 		</Routes>
 	</BrowserRouter>,
 );

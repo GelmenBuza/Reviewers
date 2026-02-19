@@ -6,3 +6,9 @@
 	justify-content: center;
 	text-align: center;
 }
+
+.pageContainer {
+	display: flex;
+	flex-direction: column;
+	width: 90%;
+}

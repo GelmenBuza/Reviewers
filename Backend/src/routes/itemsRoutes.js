@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/", getItems);
 router.get("/:id", getItemById);
-router.get("/search", getSimilarItem);
+router.get("/search/:searchText", getSimilarItem);
 
 module.exports = router;
