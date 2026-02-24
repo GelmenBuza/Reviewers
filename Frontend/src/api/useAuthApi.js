@@ -1,13 +1,11 @@
 const BASE_URL = "/api/auth";
-import apiRequest from '.'
+import apiRequest from ".";
 
 const getBaseHead = () => {
 	return {
 		"Content-Type": "application/json",
 	};
 };
-
-
 
 export const useUserApi = {
 	login: async (email, password) => {
@@ -72,5 +70,15 @@ export const useUserApi = {
 			throw new Error(`Get users Error: ${error.message}`);
 		}
 		return res.json();
+	},
+	getInfoAboutMe: async (token) => {
+		const res = await fetch("/api/me", {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (res.ok) {
+			return res.json();
+		}
 	},
 };
