@@ -14,6 +14,8 @@ const NavMenu = () => {
 		navigate(`/search/${normalizedText}`);
 	};
 
+	const onCreateClick = () => {};
+
 	return (
 		<header className={style.header}>
 			<nav className={style["header-nav"]}>
@@ -49,6 +51,7 @@ const NavMenu = () => {
 						<img src={searchImg} alt="Поиск" />
 					</button>
 				</form>
+				<button onClick={() => onCreateClick()}>Создать отзыв</button>
 			</div>
 		</header>
 	);
