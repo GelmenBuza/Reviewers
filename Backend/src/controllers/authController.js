@@ -101,7 +101,7 @@ const login = async (req, res) => {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "lax",
-			path: "api/auth/refreshToken",
+			path: "/api/auth/refreshToken",
 			maxAge: 7 * 24 * 60 * 60 * 1000,
 		});
 
@@ -128,7 +128,7 @@ const logout = async (req, res) => {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "lax",
-			path: "api/auth/refreshToken",
+			path: "/api/auth/refreshToken",
 		});
 		res.json({ status: 200 });
 	} catch {
@@ -188,7 +188,6 @@ const deleteUser = async (req, res) => {
 const refreshToken = async (req, res) => {
 	try {
 		const refreshToken = req.cookies.refreshToken;
-
 		if (!refreshToken) {
 			return res.status(401).json({ error: "Authentication required" });
 		}

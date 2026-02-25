@@ -31,8 +31,13 @@ export const useReviewApi = {
 	},
 	createReview: async (itemTitle, title, content, rating, images) => {
 		let token = window.sessionStorage.getItem("accessToken");
-		const res = await apiRequest(token, `${BASE_URL}/create`, {
+		const res = await fetch(`${BASE_URL}/create`, {
 			method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
 			body: JSON.stringify({
 				itemTitle,
 				title,
@@ -41,7 +46,7 @@ export const useReviewApi = {
 				images,
 			}),
 		});
-		return res;
+		return res.json();
 	},
 	updateReview: async (id, newTitle, newContent, newRating, newImages) => {
 		const res = await fetch(`${BASE_URL}/${id}`, {

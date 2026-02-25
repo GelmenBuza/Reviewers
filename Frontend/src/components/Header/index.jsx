@@ -14,7 +14,9 @@ const NavMenu = () => {
 		navigate(`/search/${normalizedText}`);
 	};
 
-	const onCreateClick = () => {};
+	const onCreateClick = () => {
+        navigate("/reviews/create");
+    };
 
 	return (
 		<header className={style.header}>

@@ -43,7 +43,7 @@ export const useAuthStore = create((set, get) => ({
 		}
 
 		try {
-			const res = await fetch("api/auth/refreshToken", {
+			const res = await fetch("/api/auth/refreshToken", {
 				method: "POST",
 				credentials: "include",
 			});
@@ -53,7 +53,7 @@ export const useAuthStore = create((set, get) => ({
 				set({
 					user,
 					accessToken: AccessToken,
-					isAuntificated: true,
+                    isAuthenticated: true,
 					loading: false,
 				});
 			} else {
@@ -69,7 +69,7 @@ export const useAuthStore = create((set, get) => ({
 			const { user } = await useUserApi.login(email, password);
 			set({
 				user,
-				isAuntificated: true,
+                isAuthenticated: true,
 				loading: false,
 			});
 			return { success: true };
@@ -85,28 +85,9 @@ export const useAuthStore = create((set, get) => ({
 		set({
 			user: null,
 			accessToken: null,
-			isAuntificated: false,
+            isAuthenticated: false,
 			loading: false,
 		});
-	},
-	refreshAccessToken: async () => {
-		try {
-			const res = await fetch("api/auth/refreshToken", {
-				method: "POST",
-				credentials: "include",
-			});
-			if (res.ok) {
-				const { accessToken } = await res.json();
-				get().setAccessToken(accessToken);
-				set({ accessToken });
-				return true;
-			} else {
-				get().logout();
-				return false;
-			}
-		} catch {
-			return false;
-		}
 	},
 }));
 

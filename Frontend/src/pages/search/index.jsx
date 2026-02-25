@@ -21,7 +21,6 @@ const SearchPage = () => {
 		getSimilarItems();
 	}, []);
 
-	console.log(similarItems);
 	return (
 		<div className="pageContainer">
 			<NavMenu />
