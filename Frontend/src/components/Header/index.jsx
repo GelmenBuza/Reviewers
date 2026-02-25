@@ -1,12 +1,12 @@
 import { NavLink, useNavigate } from "react-router";
-import { useUser } from "../../stores/userStore.jsx";
+import { useAuthStore } from "../../stores/userStore.jsx";
 import style from "./style.module.css";
 import searchImg from "../../assets/search.svg";
 import { useState } from "react";
 
 const NavMenu = () => {
-	const user = useUser((state) => state.user);
-	const [searchItem, setSearchItem] = useState(null);
+	const { user } = useAuthStore();
+	const [searchItem, setSearchItem] = useState("");
 	const navigate = useNavigate();
 
 	const handleSearch = () => {
@@ -19,7 +19,7 @@ const NavMenu = () => {
 			<nav className={style["header-nav"]}>
 				<NavLink to={"/"}>Отзывы</NavLink>
 
-				{Object.keys(user).length !== 0 ? (
+				{user !== null ? (
 					<span className={style.username}>{user.username}</span>
 				) : (
 					<div className={style.regLog}>

@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import { useAuthApi } from "../api/useAuthApi.js";
+import { useUserApi } from "../api/useAuthApi.js";
 
 export const useAuthStore = create((set, get) => ({
 	user: null,
 	accessToken: null,
 	loading: true,
-	isAuntificated: false,
+	isAuthenticated: false,
 
 	getAccessToken: () => sessionStorage.getItem("accessToken"),
 
@@ -19,17 +19,24 @@ export const useAuthStore = create((set, get) => ({
 
 	checkAuth: async () => {
 		const accessToken = get().getAccessToken();
-
 		if (accessToken) {
 			try {
-				const user = await useAuthApi.getInfoAboutMe(accessToken);
-				set({
-					user,
-					accessToken,
-					isAuntificated: true,
-					loading: false,
+				const res = await fetch("/api/me", {
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
 				});
-				return;
+				if (res.ok) {
+					const user = await res.json();
+
+					set({
+						user,
+						accessToken,
+						isAuthenticated: true,
+						loading: false,
+					});
+					return;
+				}
 			} catch (err) {
 				console.error("Access token invalid:", err);
 			}
@@ -41,11 +48,11 @@ export const useAuthStore = create((set, get) => ({
 				credentials: "include",
 			});
 			if (res.ok) {
-				const { accessToken, user } = await res.json();
-				get().setAccessToken(accessToken);
+				const { AccessToken, user } = await res.json();
+				get().setAccessToken(AccessToken);
 				set({
 					user,
-					accessToken,
+					accessToken: AccessToken,
 					isAuntificated: true,
 					loading: false,
 				});
@@ -53,7 +60,52 @@ export const useAuthStore = create((set, get) => ({
 				get().logout();
 			}
 		} catch (err) {
+			console.error("Refresh token failed", err);
 			get().logout();
+		}
+	},
+	login: async (email, password) => {
+		try {
+			const { user } = await useUserApi.login(email, password);
+			set({
+				user,
+				isAuntificated: true,
+				loading: false,
+			});
+			return { success: true };
+		} catch (err) {
+			set({ loading: false });
+			return { success: false, message: "Ошибка входа" };
+		}
+	},
+	logout: async () => {
+		await useUserApi.logout();
+
+		get().setAccessToken(null);
+		set({
+			user: null,
+			accessToken: null,
+			isAuntificated: false,
+			loading: false,
+		});
+	},
+	refreshAccessToken: async () => {
+		try {
+			const res = await fetch("api/auth/refreshToken", {
+				method: "POST",
+				credentials: "include",
+			});
+			if (res.ok) {
+				const { accessToken } = await res.json();
+				get().setAccessToken(accessToken);
+				set({ accessToken });
+				return true;
+			} else {
+				get().logout();
+				return false;
+			}
+		} catch {
+			return false;
 		}
 	},
 }));

@@ -20,6 +20,16 @@ export const useUserApi = {
 		}
 		return res.json();
 	},
+	logout: async () => {
+		const res = await fetch(`${BASE_URL}/logout`, {
+			method: "POST",
+			headers: getBaseHead(),
+			credentials: "include",
+		});
+		if (res.ok) {
+			return res.json();
+		}
+	},
 	register: async (email, username, password) => {
 		const res = await fetch(`${BASE_URL}/register`, {
 			method: "POST",
@@ -70,15 +80,5 @@ export const useUserApi = {
 			throw new Error(`Get users Error: ${error.message}`);
 		}
 		return res.json();
-	},
-	getInfoAboutMe: async (token) => {
-		const res = await fetch("/api/me", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		if (res.ok) {
-			return res.json();
-		}
 	},
 };

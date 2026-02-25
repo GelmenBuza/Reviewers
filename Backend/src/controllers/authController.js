@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const prisma = require("../prismaClient.js");
 const jwt = require("jsonwebtoken");
 
-
 const register = async (req, res) => {
 	try {
 		const { email, username, password } = req.body;
@@ -107,7 +106,7 @@ const login = async (req, res) => {
 		});
 
 		res.json({
-			message: "Index successful",
+			message: "Login successful",
 			user: {
 				id: user.id,
 				email: user.email,
@@ -118,7 +117,22 @@ const login = async (req, res) => {
 			code: 200,
 		});
 	} catch (err) {
-		console.log("Index error", err);
+		console.log("Login error", err);
+		res.status(500).json({ error: "Internal server error" });
+	}
+};
+
+const logout = async (req, res) => {
+	try {
+		res.clearCookie("refreshToken", {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "lax",
+			path: "api/auth/refreshToken",
+		});
+		res.json({ status: 200 });
+	} catch {
+		console.log("Logout error");
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
@@ -173,24 +187,25 @@ const deleteUser = async (req, res) => {
 
 const refreshToken = async (req, res) => {
 	try {
-        const refreshToken = req.cookies.refreshToken;
+		const refreshToken = req.cookies.refreshToken;
 
-        if (!refreshToken) {
-            return res.status(401).json({ error: "Authentication required" });
-        }
-        const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
-        req.userId = decoded.userId;
+		if (!refreshToken) {
+			return res.status(401).json({ error: "Authentication required" });
+		}
+		const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+		req.userId = decoded.userId;
 
-        const user = await prisma.user.findUnique({
-            where: { id: req.userId },
-            select: { id: true },
-        });
-        if (!user) {
-            return res.status(401).json({ error: "User not found" });
-        }
-
-        const userId = req.userId;
-
+		const user = await prisma.user.findUnique({
+			where: { id: req.userId },
+			select: {
+				id: true,
+				username: true,
+				email: true,
+			},
+		});
+		if (!user) {
+			return res.status(401).json({ error: "User not found" });
+		}
 
 		const AccessToken = jwt.sign(
 			{
@@ -206,6 +221,7 @@ const refreshToken = async (req, res) => {
 		res.json({
 			message: "Token refreshed successful",
 			AccessToken: AccessToken,
+			user: user,
 			code: 200,
 		});
 	} catch (err) {
@@ -239,6 +255,7 @@ const getUserById = async (req, res) => {
 module.exports = {
 	register,
 	login,
+	logout,
 	changeUserName,
 	deleteUser,
 	refreshToken,
