@@ -1,6 +1,7 @@
 import style from "./style.module.css";
 import { useUserApi } from "../../api/useAuthApi";
 import { useEffect, useState } from "react";
+import ImagePlaceholder from "../ImagePlaceholder";
 
 const ReviewCard = ({ item }) => {
 	const [author, setAuthor] = useState();
@@ -12,9 +13,12 @@ const ReviewCard = ({ item }) => {
 		};
 		getAuthor();
 	}, [item.authorId]);
+	console.log(item.images, "images");
 	return (
 		<div className={style.card}>
-			<div className={style.images}></div>
+			<div className={style.images}>
+				{item.images.lenght ? item.images : <ImagePlaceholder />}
+			</div>
 			<div className={style.reviewData}>
 				<div className={style.reviewContent}>
 					<h3 className={style.reviewTitle}>{item.title}</h3>

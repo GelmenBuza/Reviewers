@@ -12,11 +12,28 @@ export default function ItemsCatalog() {
 		};
 		getItems();
 	}, []);
+
 	return (
 		<div className={style.catalog}>
-			{items.map((item) => (
-				<ItemCard key={item.id} item={item} />
-			))}
+			<div className={style.subCatalog}>
+				<h3>Новые предметы</h3>
+				<div className={style["subCatalog-items"]}>
+					{items
+						.slice(items.length - 5, items.length)
+						.reverse()
+						.map((item) => (
+							<ItemCard key={item.id} item={item} />
+						))}
+				</div>
+			</div>
+			<div className={style.subCatalog}>
+				<h3>Все предметы</h3>
+				<div className={style["subCatalog-items"]}>
+					{items.map((item) => (
+						<ItemCard key={item.id * 100} item={item} />
+					))}
+				</div>
+			</div>
 		</div>
 	);
 }
