@@ -1,4 +1,4 @@
-const app = require('./index.js');
+const app = require('./index.ts');
 
 const port = process.env.PORT || 3000;
 

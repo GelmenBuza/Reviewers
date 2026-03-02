@@ -3,8 +3,8 @@ const {
 	getItems,
 	getItemById,
 	getSimilarItem,
-} = require("../controllers/itemsController.js");
-const authMiddleware = require("../middleware/authMiddleware.js");
+} = require("../controllers/itemsController.ts");
+const authMiddleware = require("../middleware/authMiddleware.ts");
 
 const router = express.Router();
 

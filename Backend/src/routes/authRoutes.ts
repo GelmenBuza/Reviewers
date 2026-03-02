@@ -7,8 +7,8 @@ const {
 	deleteUser,
 	refreshToken,
 	getUserById,
-} = require("../controllers/authController.js");
-const authMiddleware = require("../middleware/authMiddleware.js");
+} = require("../controllers/authController.ts");
+const authMiddleware = require("../middleware/authMiddleware.ts");
 
 const router = express.Router();
 

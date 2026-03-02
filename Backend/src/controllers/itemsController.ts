@@ -1,5 +1,5 @@
 const { error } = require("console");
-const prisma = require("../prismaClient.js");
+const prisma = require("../prismaClient.ts");
 const { normalize } = require("path");
 
 const getItems = async (req, res) => {

@@ -1,5 +1,5 @@
 const { error } = require("console");
-const prisma = require("../prismaClient.js");
+const prisma = require("../prismaClient.ts");
 
 // const bcrypt = require('bcryptjs')
 // const jwt = require('jsonwebtoken');
