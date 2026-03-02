@@ -1,5 +1,5 @@
-const express = require("express");
-const {
+import express from "express";
+import {
 	register,
 	login,
 	logout,
@@ -7,8 +7,8 @@ const {
 	deleteUser,
 	refreshToken,
 	getUserById,
-} = require("../controllers/authController.ts");
-const authMiddleware = require("../middleware/authMiddleware.ts");
+} from "../controllers/authController";
+import authMiddleware from "../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -20,4 +20,4 @@ router.delete("/deleteUser", authMiddleware, deleteUser);
 router.post("/refreshToken", refreshToken);
 router.get("/user/:id", getUserById);
 
-module.exports = router;
+export default router;

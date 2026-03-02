@@ -1,7 +1,13 @@
-const jwt = require("jsonwebtoken");
-const prisma = require("../prismaClient.ts");
+import { Request, Response, NextFunction } from "express";
 
-const authMiddleware = async (req, res, next) => {
+import jwt from "jsonwebtoken";
+import prisma from "../prismaClient";
+
+const authMiddleware = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	try {
 		const AccessToken = req.headers.authorization.split(" ")[1];
 		if (!AccessToken) {
@@ -31,4 +37,4 @@ const authMiddleware = async (req, res, next) => {
 	}
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

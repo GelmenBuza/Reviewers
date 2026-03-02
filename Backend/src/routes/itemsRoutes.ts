@@ -1,10 +1,10 @@
-const express = require("express");
-const {
+import express from "express";
+import {
 	getItems,
 	getItemById,
 	getSimilarItem,
-} = require("../controllers/itemsController.ts");
-const authMiddleware = require("../middleware/authMiddleware.ts");
+} from "../controllers/itemsController";
+import authMiddleware from "../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -12,4 +12,4 @@ router.get("/", getItems);
 router.get("/:id", getItemById);
 router.get("/search/:searchText", getSimilarItem);
 
-module.exports = router;
+export default router;

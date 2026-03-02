@@ -1,21 +1,54 @@
-const { error } = require("console");
-const prisma = require("../prismaClient.ts");
+import { Request, Response } from "express";
+import prisma from "../prismaClient";
+import { Item, Review } from "@prisma/client";
 
 // const bcrypt = require('bcryptjs')
 // const jwt = require('jsonwebtoken');
 
-const create = async (req, res) => {
+// declare global {
+// 	namespace Express {
+// 		interface Request {
+// 			reviewId?: string;
+// 		}
+// 	}
+// }
+
+interface CreateBody {
+	itemTitle?: string;
+	title?: string;
+	content?: string;
+	rating?: string;
+	images?: string;
+}
+
+interface CreateRequest {
+	body: CreateBody;
+	userId?: string;
+}
+
+interface UpdateBody {
+	newTitle?: string;
+	newContent?: string;
+	newRating?: string;
+	newImages?: string;
+}
+
+interface UpdateRequest extends Request {
+	body: UpdateBody;
+}
+
+const create = async (req: CreateRequest, res: Response): Promise<void> => {
 	try {
 		const { itemTitle, title, content, rating, images } = req.body;
-		const intRating = +rating;
-		const authorId = req.userId;
 
 		// Валидация
-		if (!title || !content || !intRating) {
+		if (!title || !content || !rating) {
 			return res
 				.status(400)
 				.json({ error: "Title, content and rating are required" });
 		}
+		const intRating = +rating as number;
+		const authorId = req.userId;
 
 		// Логика предмета
 		let itemId;
@@ -64,10 +97,13 @@ const create = async (req, res) => {
 	}
 };
 
-const updateReview = async (req, res) => {
+const updateReview = async (
+	req: UpdateRequest,
+	res: Response,
+): Promise<void> => {
 	try {
 		const { newTitle, newContent, newRating, newImages } = req.body;
-		const reviewId = parseInt(req.params.id);
+		const reviewId = req.params.id;
 
 		if (!newTitle || !newContent || !newRating) {
 			return res
@@ -106,9 +142,9 @@ const updateReview = async (req, res) => {
 	}
 };
 
-const deleteReview = async (req, res) => {
+const deleteReview = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const reviewId = parseInt(req.params.id);
+		const reviewId = req.params.id;
 
 		await prisma.review.delete({
 			where: {
@@ -126,7 +162,7 @@ const deleteReview = async (req, res) => {
 	}
 };
 
-const getReviews = async (req, res) => {
+const getReviews = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const reviews = await prisma.review.findMany({
 			select: {
@@ -147,9 +183,9 @@ const getReviews = async (req, res) => {
 	}
 };
 
-const getReviewsByItemID = async (req, res) => {
+const getReviewsByItemID = async (req: Request, res: Response) => {
 	try {
-		const itemId = parseInt(req.params.id);
+		const itemId = req.params.id;
 		const review = await prisma.review.findMany({
 			select: {
 				id: true,
@@ -165,17 +201,11 @@ const getReviewsByItemID = async (req, res) => {
 				ItemId: itemId,
 			},
 		});
-        res.status(200).json(review);
+		res.status(200).json(review);
 	} catch (err) {
 		console.log("Error fetching reviews by item id:", err);
 		res.status(500).json({ error: "Failed to fetch reviews" });
 	}
 };
 
-module.exports = {
-	create,
-	updateReview,
-	deleteReview,
-	getReviews,
-	getReviewsByItemID,
-};
+export { create, updateReview, deleteReview, getReviews, getReviewsByItemID };

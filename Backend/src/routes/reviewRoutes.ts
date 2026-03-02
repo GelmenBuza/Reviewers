@@ -1,12 +1,12 @@
-const express = require("express");
-const {
+import express from "express";
+import {
 	create,
 	updateReview,
 	deleteReview,
 	getReviews,
 	getReviewsByItemID,
-} = require("../controllers/reviewController.ts");
-const authMiddleware = require("../middleware/authMiddleware.ts");
+} from "../controllers/reviewController";
+import authMiddleware from "../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.patch("/:id", authMiddleware, updateReview);
 router.get("/:id", getReviewsByItemID);
 router.get("/", getReviews);
 
-module.exports = router;
+export default router;

@@ -1,8 +1,16 @@
-const { error } = require("console");
-const prisma = require("../prismaClient.ts");
-const { normalize } = require("path");
+import { Request, Response } from "express";
+import prisma from "../prismaClient";
+import { Item } from "@prisma/client";
 
-const getItems = async (req, res) => {
+declare global {
+	namespace Express {
+		interface Request {
+			userId?: string;
+		}
+	}
+}
+
+const getItems = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const items = await prisma.item.findMany({
 			select: {
@@ -17,9 +25,9 @@ const getItems = async (req, res) => {
 	}
 };
 
-const getItemById = async (req, res) => {
+const getItemById = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const itemId = parseInt(req.params.id);
+		const itemId = req.params.id;
 		const item = await prisma.item.findUnique({
 			select: {
 				id: true,
@@ -36,9 +44,9 @@ const getItemById = async (req, res) => {
 	}
 };
 
-const getSimilarItem = async (req, res) => {
+const getSimilarItem = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const searchText = req.params.searchText;
+		const searchText = req.params.searchText as String;
 		if (!searchText) {
 			return res.status(400).json({ error: "Search text is required" });
 		}
@@ -63,4 +71,4 @@ const getSimilarItem = async (req, res) => {
 	}
 };
 
-module.exports = { getItems, getItemById, getSimilarItem };
+export { getItems, getItemById, getSimilarItem };
