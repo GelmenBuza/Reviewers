@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
-import prisma from "../prismaClient";
-import { Item } from "@prisma/client";
+import {prisma} from "../prismaClient";
 
 declare global {
 	namespace Express {
 		interface Request {
-			userId?: string;
+			userId?: number;
 		}
 	}
 }
 
-const getItems = async (req: Request, res: Response): Promise<void> => {
+const getItems = async (req: Request, res: Response) => {
 	try {
 		const items = await prisma.item.findMany({
 			select: {
@@ -25,9 +24,9 @@ const getItems = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-const getItemById = async (req: Request, res: Response): Promise<void> => {
+const getItemById = async (req: Request, res: Response) => {
 	try {
-		const itemId = req.params.id;
+		const itemId = parseInt( req.params.id as string);
 		const item = await prisma.item.findUnique({
 			select: {
 				id: true,
@@ -44,7 +43,7 @@ const getItemById = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-const getSimilarItem = async (req: Request, res: Response): Promise<void> => {
+const getSimilarItem = async (req: Request, res: Response) => {
 	try {
 		const searchText = req.params.searchText as String;
 		if (!searchText) {

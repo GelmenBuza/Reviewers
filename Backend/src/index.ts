@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 
-import prisma from "./prismaClient";
+import {prisma} from "./prismaClient";
 import authRoutes from "./routes/authRoutes";
 import reviewRoutes from "./routes/reviewRoutes";
 import itemsRoutes from "./routes/itemsRoutes";
@@ -15,13 +15,13 @@ const app: Application = express();
 declare global {
 	namespace Express {
 		interface Request {
-			userId?: string;
+			userId?: number;
 		}
 	}
 }
 
 interface JwtPayload {
-	userId: string;
+	userId: number;
 	device?: string;
 	iat?: number;
 	exp?: number;

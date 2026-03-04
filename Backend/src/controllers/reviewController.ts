@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../prismaClient";
-import { Item, Review } from "@prisma/client";
+import {prisma} from "../prismaClient";
 
 // const bcrypt = require('bcryptjs')
 // const jwt = require('jsonwebtoken');
@@ -23,7 +22,7 @@ interface CreateBody {
 
 interface CreateRequest {
 	body: CreateBody;
-	userId?: string;
+	userId?: number;
 }
 
 interface UpdateBody {
@@ -37,7 +36,7 @@ interface UpdateRequest extends Request {
 	body: UpdateBody;
 }
 
-const create = async (req: CreateRequest, res: Response): Promise<void> => {
+const create = async (req: CreateRequest, res: Response) => {
 	try {
 		const { itemTitle, title, content, rating, images } = req.body;
 
@@ -47,7 +46,7 @@ const create = async (req: CreateRequest, res: Response): Promise<void> => {
 				.status(400)
 				.json({ error: "Title, content and rating are required" });
 		}
-		const intRating = +rating as number;
+		const intRating = parseInt(rating);
 		const authorId = req.userId;
 
 		// Логика предмета
@@ -60,11 +59,13 @@ const create = async (req: CreateRequest, res: Response): Promise<void> => {
 		} else {
 			const newItem = await prisma.item.create({
 				data: {
-					title: itemTitle,
+					title: itemTitle as string,
 				},
 			});
 			itemId = newItem.id;
 		}
+        if (!authorId) return res.status(500).json({error: 'Author fetch error'})
+        const imagesArray = Array.isArray(images) ? images : images ? [images] : [];
 
 		// Создание отзыва
 		const review = await prisma.review.create({
@@ -72,7 +73,7 @@ const create = async (req: CreateRequest, res: Response): Promise<void> => {
 				title,
 				content,
 				rating: intRating,
-				images: images || [],
+				images: imagesArray,
 				authorId,
 				ItemId: itemId,
 			},
@@ -100,10 +101,12 @@ const create = async (req: CreateRequest, res: Response): Promise<void> => {
 const updateReview = async (
 	req: UpdateRequest,
 	res: Response,
-): Promise<void> => {
+) => {
 	try {
 		const { newTitle, newContent, newRating, newImages } = req.body;
-		const reviewId = req.params.id;
+		const reviewId = parseInt(req.params.id as string);
+        const imagesArray = Array.isArray(newImages) ? newImages : newImages ? [newImages] : [];
+        const intRating = parseInt(newRating as string);
 
 		if (!newTitle || !newContent || !newRating) {
 			return res
@@ -119,8 +122,8 @@ const updateReview = async (
 			data: {
 				title: newTitle,
 				content: newContent,
-				rating: newRating,
-				images: newImages,
+				rating: intRating,
+				images: imagesArray,
 			},
 			select: {
 				id: true,
@@ -142,9 +145,9 @@ const updateReview = async (
 	}
 };
 
-const deleteReview = async (req: Request, res: Response): Promise<void> => {
+const deleteReview = async (req: Request, res: Response) => {
 	try {
-		const reviewId = req.params.id;
+		const reviewId = parseInt(req.params.id as string);
 
 		await prisma.review.delete({
 			where: {
@@ -162,7 +165,7 @@ const deleteReview = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-const getReviews = async (req: Request, res: Response): Promise<void> => {
+const getReviews = async (req: Request, res: Response) => {
 	try {
 		const reviews = await prisma.review.findMany({
 			select: {
@@ -185,7 +188,7 @@ const getReviews = async (req: Request, res: Response): Promise<void> => {
 
 const getReviewsByItemID = async (req: Request, res: Response) => {
 	try {
-		const itemId = req.params.id;
+		const itemId = parseInt(req.params.id as string);
 		const review = await prisma.review.findMany({
 			select: {
 				id: true,

@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import prisma from "../prismaClient";
+import {prisma} from "../prismaClient";
 import jwt from "jsonwebtoken";
-import { User } from "@prisma/client";
 
 declare global {
 	namespace Express {
 		interface Request {
-			userId?: string;
+			userId?: number;
 		}
 	}
 }
@@ -40,13 +39,13 @@ interface ChangeNameRequest extends Request {
 }
 
 interface JwtPayload {
-	userId: string;
+	userId: number;
 	device?: string;
 	iat?: number;
 	exp?: number;
 }
 
-const register = async (req: RegisterRequest, res: Response): Promise<void> => {
+const register = async (req: RegisterRequest, res: Response) => {
 	try {
 		const { email, username, password } = req.body;
 
@@ -90,7 +89,7 @@ const register = async (req: RegisterRequest, res: Response): Promise<void> => {
 	}
 };
 
-const login = async (req: LoginRequest, res: Response): Promise<void> => {
+const login = async (req: LoginRequest, res: Response) => {
 	try {
 		const { email, password } = req.body;
 
@@ -100,7 +99,7 @@ const login = async (req: LoginRequest, res: Response): Promise<void> => {
 				.json({ error: "Email and password are required" });
 		}
 
-		const user: User = await prisma.user.findUnique({
+		const user = await prisma.user.findUnique({
 			where: { email },
 		});
 
@@ -118,7 +117,6 @@ const login = async (req: LoginRequest, res: Response): Promise<void> => {
 		if (!jwtSecret) {
 			throw new Error("JWT_SECRET is not defined");
 		}
-
 		const AccessToken = jwt.sign(
 			{
 				userId: user.id,
@@ -127,8 +125,8 @@ const login = async (req: LoginRequest, res: Response): Promise<void> => {
 			jwtSecret,
 			{
 				expiresIn: process.env.JWT_EXPIRES_IN || "15m",
-			},
-		);
+			} as jwt.SignOptions,
+		) ;
 		const RefreshToken = jwt.sign(
 			{
 				userId: user.id,
@@ -171,7 +169,7 @@ const login = async (req: LoginRequest, res: Response): Promise<void> => {
 	}
 };
 
-const logout = async (req: Request, res: Response): Promise<void> => {
+const logout = async (req: Request, res: Response) => {
 	try {
 		res.clearCookie("refreshToken", {
 			httpOnly: true,
@@ -189,7 +187,7 @@ const logout = async (req: Request, res: Response): Promise<void> => {
 const changeUserName = async (
 	req: ChangeNameRequest,
 	res: Response,
-): Promise<void> => {
+) => {
 	try {
 		const { newName } = req.body;
 		const userId = req.userId;
@@ -224,7 +222,7 @@ const changeUserName = async (
 	}
 };
 
-const deleteUser = async (req: Request, res: Response): Promise<void> => {
+const deleteUser = async (req: Request, res: Response) => {
 	try {
 		const userId = req.userId;
 
@@ -245,7 +243,7 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-const refreshToken = async (req: Request, res: Response): Promise<void> => {
+const refreshToken = async (req: Request, res: Response) => {
 	try {
 		const refreshToken = req.cookies.refreshToken;
 		if (!refreshToken) {
@@ -281,7 +279,7 @@ const refreshToken = async (req: Request, res: Response): Promise<void> => {
 			jwtSecret,
 			{
 				expiresIn: process.env.JWT_EXPIRES_IN || "15m",
-			},
+			} as jwt.SignOptions,
 		);
 
 		res.json({
@@ -296,9 +294,9 @@ const refreshToken = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-const getUserById = async (req: Request, res: Response): Promise<void> => {
+const getUserById = async (req: Request, res: Response) => {
 	try {
-		const userId = req.params.id;
+		const userId = parseInt(req.params.id as string);
 		const user = await prisma.user.findUnique({
 			where: {
 				id: userId,
